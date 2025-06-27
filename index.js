@@ -14,7 +14,7 @@ mongoose.connect(dbUrl,
         console.log('MongoDBコネクションOK！！');
     })
     .catch(err => {
-        console.log('MongoDBコネクションエラー！！！');
+        console.log('MongoDBコネクションエラー！！');
         console.log(err);
     });
 
