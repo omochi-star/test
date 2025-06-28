@@ -4,11 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新規登録</title>
+    <title>ブックレビュー新規登録</title>
 </head>
 
 <body>
     <h1>新規登録</h1>
+    <form action="/bookreview" method="POST">
+        <label for="title">本のタイトル</label>
+        <input type="text" name=bookreview[title]" id="title" required>
+        <label for="rate">評価</label>
+        <input type="range" name=bookreview[rating]" id="rate" min="1" max="5" required>
+        <label for="comment">コメント</label>
+        <textarea name="bookreview[comment]" id="comment" rows="5" cols="33" required></textarea>
+        <button>投稿する</button>
+    </form>
     <a href="/">ホームに戻る</a>
 </body>
 
