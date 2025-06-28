@@ -38,6 +38,10 @@ app.get('/bookreview', (req, res) => {
     res.render('index');
 });
 
+app.post('/bookreview', (req, res) => {
+    console.log(req.body);
+    res.send(req.body);
+});
 app.get('/bookreview/new', (req, res) => {
     res.render('new');
 })
