@@ -1,4 +1,5 @@
 const express = require('express');
+const methodOverride = require('method-override')
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
@@ -23,7 +24,7 @@ mongoose.connect(dbUrl,
 // cssなど静的ファイルの配置場所を設定
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
-
+app.use(methodOverride('_method'));
 // node.jsの実行場所に関わらず、viewsが参照するディレクトリを設定する
 app.set('views', path.join(__dirname, 'views'));
 
@@ -42,13 +43,21 @@ app.post('/bookreview', (req, res) => {
     console.log(req.body);
     res.send(req.body);
 });
+
 app.get('/bookreview/new', (req, res) => {
     res.render('new');
 })
 
-app.get('/bookreview/:id', (req, res) => {
-    const { id } = req.params;
-    res.render('show', { id });
+app.get('/bookreview/id', (req, res) => {
+    res.render('show',);
+});
+
+app.get('/bookreview/id/edit', (req, res) => {
+    res.render('edit');
+});
+
+app.put('/bookreview/id', (req, res) => {
+    res.send(req.body);
 });
 
 app.listen(3000, () => {
