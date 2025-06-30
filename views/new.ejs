@@ -5,20 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ブックレビュー新規登録</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 
 <body>
     <h1>新規登録</h1>
     <form action="/bookreview" method="POST">
-        <label for="title">本のタイトル</label>
-        <input type="text" name=bookreview[title]" id="title" required>
-        <label for="rate">評価</label>
-        <input type="range" name=bookreview[rating]" id="rate" min="1" max="5" required>
-        <label for="comment">コメント</label>
-        <textarea name="bookreview[comment]" id="comment" rows="5" cols="33" required></textarea>
-        <button>投稿する</button>
+        <div class="mb-3">
+            <label for="title" class="form-label">本のタイトル</label>
+            <input type="text" name="bookreview[title]" class="form-control" id="title" aria-describedby="emailHelp"
+                required>
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="rate" class="form-label">評価</label>
+            <input type="range" class="form-control" name=bookreview[rating]" id="rate" min="1" max="5" required>
+        </div>
+        <div class="mb-3">
+            <label for="comment" class="form-label">コメント</label>
+            <textarea name="bookreview[comment]" class="form-control" id="comment" rows="5" cols="33"
+                required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">登録</button>
     </form>
     <a href="/">ホームに戻る</a>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

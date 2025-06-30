@@ -19,16 +19,12 @@ mongoose.connect(dbUrl,
         console.log(err);
     });
 
-
-
-// cssなど静的ファイルの配置場所を設定
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-// node.jsの実行場所に関わらず、viewsが参照するディレクトリを設定する
+
 app.set('views', path.join(__dirname, 'views'));
 
-//　テンプレートにejsを使う設定
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
