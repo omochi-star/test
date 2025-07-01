@@ -4,6 +4,15 @@
         <h1>
             読書記録
         </h1>
+        <ul>
+            <% for(let bookreview of bookreviews) {%>
+                <li>
+                    <a href="bookreview/<%= bookreview._id  %>">
+                        <%=bookreview.title %>
+                    </a>
+                </li>
+                <% } %>
+        </ul>
         <a href="/bookreview/new">新規登録へ</a>
         <a href="/bookreview/id">詳細へ</a>
 

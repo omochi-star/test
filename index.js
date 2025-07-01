@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const engine = require('ejs-mate');
-
+const Review = require('./models/bookreview')
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/bookreview';
 
 mongoose.connect(dbUrl,
@@ -32,21 +32,25 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
-app.get('/bookreview', (req, res) => {
-    res.render('index');
+app.get('/bookreview', async (req, res) => {
+    const bookreviews = await Review.find({});
+    res.render('index', { bookreviews });
 });
 
-app.post('/bookreview', (req, res) => {
+app.post('/bookreview', async (req, res) => {
     console.log(req.body);
-    res.send(req.body);
+    const bookreview = new Review(req.body.bookreview);
+    await bookreview.save();
+    res.redirect(`bookreview/${bookreview._id}`);
 });
 
 app.get('/bookreview/new', (req, res) => {
     res.render('new');
 })
 
-app.get('/bookreview/id', (req, res) => {
-    res.render('show',);
+app.get('/bookreview/:id', async (req, res) => {
+    const bookreview = await Review.findById(req.params.id);
+    res.render('show', { bookreview });
 });
 
 app.get('/bookreview/id/edit', (req, res) => {
