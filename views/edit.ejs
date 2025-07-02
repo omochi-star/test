@@ -1,13 +1,24 @@
 <% layout('layouts/boilerplate') %>
 
     <h1>編集</h1>
-    <form action="/bookreview/id?_method=PUT" method="POST">
-        <label for="title">本のタイトル</label>
-        <input type="text" name=bookreview[title]" id="title" required>
-        <label for="rate">評価</label>
-        <input type="range" name=bookreview[rating]" id="rate" min="1" max="5" required>
-        <label for="comment">コメント</label>
-        <textarea name="bookreview[comment]" id="comment" rows="5" cols="33" required></textarea>
-        <button>登録</button>
+
+    <form action="/bookreview/<%= bookreview._id %>?_method=PUT" method="POST">
+        <div class="mb-3">
+            <label for="title" class="form-label">本のタイトル</label>
+            <input type="text" name="bookreview[title]" class="form-control" id="title" aria-describedby="emailHelp"
+                value="<%= bookreview.title %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="rate" class="form-label">評価</label>
+            <input type="range" class="form-control" name=bookreview[rating]" id="rate" min="1" max="5"
+                value="<%= bookreview.rating%>" required>
+        </div>
+        <div class="mb-3">
+            <label for="comment" class="form-label">コメント</label>
+            <textarea name="bookreview[comment]" class="form-control" id="comment" rows="5" cols="33"
+                required><%= bookreview.comment%></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">更新</button>
     </form>
-    <a href="/">ホームに戻る</a>
+
+    <a href="/bookreview">一覧に戻る</a>

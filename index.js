@@ -53,13 +53,17 @@ app.get('/bookreview/:id', async (req, res) => {
     res.render('show', { bookreview });
 });
 
-app.get('/bookreview/:id/edit', (req, res) => {
-    const { id } = req.params;
-    res.render('edit', { id });
+app.get('/bookreview/:id/edit', async (req, res) => {
+    const bookreview = await Review.findById(req.params.id);
+    res.render('edit', { bookreview });
 });
 
-app.put('/bookreview/:id', (req, res) => {
-    res.send(req.body);
+app.put('/bookreview/:id', async (req, res) => {
+    console.log(req.body);
+    const { id } = req.params;
+    const bookreview = await Review.findByIdAndUpdate(id, { ...req.body.bookreview });
+    await bookreview.save();
+    res.redirect(`/bookreview/${bookreview._id}`)
 });
 
 app.delete('/bookreview/:id', async (req, res) => {
