@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('layouts/boilerplate') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>編集</title>
-</head>
-
-<body>
     <h1>編集</h1>
     <form action="/bookreview/id?_method=PUT" method="POST">
         <label for="title">本のタイトル</label>
@@ -19,7 +11,3 @@
         <button>登録</button>
     </form>
     <a href="/">ホームに戻る</a>
-
-</body>
-
-</html>

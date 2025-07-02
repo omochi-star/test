@@ -1,7 +1,15 @@
 <% layout('layouts/boilerplate') %>
-    <h1>
-        <%= bookreview.title %>の
-            詳細ページ
-    </h1>
-    <a href="/bookreview/id/edit">編集へ</a>
-    <a href="/bookreview">一覧に戻る</a>
+    <h4>
+        「<%= bookreview.title %>」の感想
+    </h4>
+    <div class="card mb-3 mt-3">
+        <div class="card-body">
+            <p class="card-text">
+                <%= bookreview.comment %>
+            </p>
+        </div>
+    </div>
+    <a class="btn btn-primary" href="/bookreview/<%= bookreview._id%>/edit" role="button">編集</a>
+    <form class="d-inline" action="/bookreview/<%= bookreview._id%>?method_DELETE" method="POST">
+        <button class="btn btn-danger">削除</button>
+    </form>
