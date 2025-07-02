@@ -54,7 +54,7 @@ app.get('/bookreview/:id', async (req, res) => {
 });
 
 app.get('/bookreview/:id/edit', (req, res) => {
-    const id = req.params.id
+    const { id } = req.params;
     res.render('edit', { id });
 });
 
@@ -62,8 +62,10 @@ app.put('/bookreview/:id', (req, res) => {
     res.send(req.body);
 });
 
-app.delete('/bookreview/:id', (req, res) => {
-    res.send('delete!!!!')
+app.delete('/bookreview/:id', async (req, res) => {
+    const { id } = req.params;
+    await Review.findByIdAndDelete(id);
+    res.redirect('/bookreview');
 });
 
 app.listen(3000, () => {
