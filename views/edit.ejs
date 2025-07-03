@@ -9,6 +9,10 @@
                 value="<%= bookreview.title %>" required>
         </div>
         <div class="mb-3">
+            <label for="author" class="form-label">著者</label>
+            <input type="text" name="bookreview[author]" class="form-control" id="author" required>
+        </div>
+        <div class="mb-3">
             <label for="category" class="form-label">ジャンル</label>
             <input type="text" name="bookreview[category]" class="form-control" id="category"
                 value="<%= bookreview.category %>" required>
