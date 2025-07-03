@@ -3,8 +3,11 @@
     <form action="/bookreview" method="POST">
         <div class="mb-3">
             <label for="title" class="form-label">本のタイトル</label>
-            <input type="text" name="bookreview[title]" class="form-control" id="title" aria-describedby="emailHelp"
-                required>
+            <input type="text" name="bookreview[title]" class="form-control" id="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">ジャンル</label>
+            <input type="text" name="bookreview[category]" class="form-control" id="category" required>
         </div>
         <div class="mb-3">
             <label for="rate" class="form-label">評価</label>

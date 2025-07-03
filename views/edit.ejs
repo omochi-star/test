@@ -9,6 +9,11 @@
                 value="<%= bookreview.title %>" required>
         </div>
         <div class="mb-3">
+            <label for="category" class="form-label">ジャンル</label>
+            <input type="text" name="bookreview[category]" class="form-control" id="category"
+                value="<%= bookreview.category %>" required>
+        </div>
+        <div class="mb-3">
             <label for="rate" class="form-label">評価</label>
             <input type="range" class="form-control" name=bookreview[rating]" id="rate" min="1" max="5"
                 value="<%= bookreview.rating%>" required>
