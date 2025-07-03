@@ -5,11 +5,12 @@
             読んだ本一覧
         </h3>
         <ul>
-            <% for(let bookreview of bookreviews) {%>
+            <% for(let bookreview of formattedReviews) {%>
                 <li>
                     <a href="bookreview/<%= bookreview._id  %>">
                         <%=bookreview.title %>
                     </a>
+                    - <%= bookreview.createdAtFormatted %>
                 </li>
                 <% } %>
         </ul>

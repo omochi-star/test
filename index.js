@@ -34,7 +34,13 @@ app.get('/', (req, res) => {
 
 app.get('/bookreview', async (req, res) => {
     const bookreviews = await Review.find({});
-    res.render('index', { bookreviews });
+    const formattedReviews = bookreviews.map(bookreview => ({
+        ...bookreview.toObject(),
+        createdAtFormatted: bookreview.createdAt.toLocaleDateString('ja-JP'),
+        updatedAtFormatted: bookreview.updatedAt.toLocaleDateString('ja-JP')
+    }));
+
+    res.render('index', { formattedReviews });
 });
 
 app.post('/bookreview', async (req, res) => {
@@ -50,7 +56,10 @@ app.get('/bookreview/new', (req, res) => {
 
 app.get('/bookreview/:id', async (req, res) => {
     const bookreview = await Review.findById(req.params.id);
-    res.render('show', { bookreview });
+    const dateStr = bookreview.createdAt.toLocaleDateString();
+
+    res.render('show', { bookreview, dateStr });
+
 });
 
 app.get('/bookreview/:id/edit', async (req, res) => {
