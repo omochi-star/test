@@ -4,7 +4,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const engine = require('ejs-mate');
-const Review = require('./models/bookreview')
+const Review = require('./models/bookreview');
+// const morgan = require('morgan');
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/bookreview';
 
 mongoose.connect(dbUrl,
@@ -27,10 +28,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+// app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
     res.render('home');
 });
+
+
 
 app.get('/bookreview', async (req, res) => {
     const bookreviews = await Review.find({});
@@ -44,7 +48,6 @@ app.get('/bookreview', async (req, res) => {
 });
 
 app.post('/bookreview', async (req, res) => {
-    console.log(req.body);
     const bookreview = new Review(req.body.bookreview);
     await bookreview.save();
     res.redirect(`bookreview/${bookreview._id}`);
@@ -68,7 +71,7 @@ app.get('/bookreview/:id/edit', async (req, res) => {
 });
 
 app.put('/bookreview/:id', async (req, res) => {
-    console.log(req.body);
+
     const { id } = req.params;
     const bookreview = await Review.findByIdAndUpdate(id, { ...req.body.bookreview });
     await bookreview.save();
@@ -79,6 +82,11 @@ app.delete('/bookreview/:id', async (req, res) => {
     const { id } = req.params;
     await Review.findByIdAndDelete(id);
     res.redirect('/bookreview');
+});
+
+app.use((err, rew, res, next) => {
+    console.log(err);
+    next(err);
 });
 
 app.listen(3000, () => {
