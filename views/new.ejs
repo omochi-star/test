@@ -1,27 +1,43 @@
 <% layout('layouts/boilerplate') %>
-    <h1>新規登録</h1>
-    <form action="/bookreview" method="POST">
-        <div class="mb-3">
-            <label for="title" class="form-label">本のタイトル</label>
-            <input type="text" name="bookreview[title]" class="form-control" id="title" required>
-        </div>
-        <div class="mb-3">
-            <label for="author" class="form-label">著者</label>
-            <input type="text" name="bookreview[author]" class="form-control" id="author" required>
-        </div>
-        <div class="mb-3">
-            <label for="category" class="form-label">ジャンル</label>
-            <input type="text" name="bookreview[category]" class="form-control" id="category" required>
-        </div>
-        <div class="mb-3">
-            <label for="rate" class="form-label">評価</label>
-            <input type="range" class="form-control" name=bookreview[rating]" id="rate" min="1" max="5" required>
-        </div>
-        <div class="mb-3">
-            <label for="comment" class="form-label">コメント</label>
-            <textarea name="bookreview[comment]" class="form-control" id="comment" rows="5" cols="33"
-                required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">登録</button>
-    </form>
-    <a href="/">ホームに戻る</a>
+    <h1 class="text-center">新規登録</h1>
+    <div class="offset-md-3 col-md-6">
+        <form action="/bookreview" method="POST" class="validated-form" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">本のタイトル</label>
+                <input type="text" name="bookreview[title]" class="form-control" id="title" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="author" class="form-label">著者</label>
+                <input type="text" name="bookreview[author]" class="form-control" id="author" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">ジャンル</label>
+                <input type="text" name="bookreview[category]" class="form-control" id="category" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="rate" class="form-label">評価</label>
+                <input type="range" class="form-control" name=bookreview[rating]" id="rate" min="1" max="5" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="comment" class="form-label">コメント</label>
+                <textarea name="bookreview[comment]" class="form-control" id="comment" rows="5" cols="33"
+                    required></textarea>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">登録</button>
+        </form>
+    </div>

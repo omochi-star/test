@@ -1,34 +1,50 @@
 <% layout('layouts/boilerplate') %>
 
-    <h1>編集</h1>
-
-    <form action="/bookreview/<%= bookreview._id %>?_method=PUT" method="POST">
-        <div class="mb-3">
-            <label for="title" class="form-label">本のタイトル</label>
-            <input type="text" name="bookreview[title]" class="form-control" id="title" aria-describedby="emailHelp"
-                value="<%= bookreview.title %>" required>
-        </div>
-        <div class="mb-3">
-            <label for="author" class="form-label">著者</label>
-            <input type="text" name="bookreview[author]" class="form-control" id="author"
-                value="<%= bookreview.author %>" required>
-        </div>
-        <div class="mb-3">
-            <label for="category" class="form-label">ジャンル</label>
-            <input type="text" name="bookreview[category]" class="form-control" id="category"
-                value="<%= bookreview.category %>" required>
-        </div>
-        <div class="mb-3">
-            <label for="rate" class="form-label">評価</label>
-            <input type="range" class="form-control" name=bookreview[rating]" id="rate" min="1" max="5"
-                value="<%= bookreview.rating%>" required>
-        </div>
-        <div class="mb-3">
-            <label for="comment" class="form-label">コメント</label>
-            <textarea name="bookreview[comment]" class="form-control" id="comment" rows="5" cols="33"
-                required><%= bookreview.comment%></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">更新</button>
-    </form>
+    <h1 class="text-center">編集</h1>
+    <div class="offset-md-3 col-md-6">
+        <form action="/bookreview/<%= bookreview._id %>?_method=PUT" method="POST" class="validated-form" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">本のタイトル</label>
+                <input type="text" name="bookreview[title]" class="form-control" id="title" aria-describedby="emailHelp"
+                    value="<%= bookreview.title %>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="author" class="form-label">著者</label>
+                <input type="text" name="bookreview[author]" class="form-control" id="author"
+                    value="<%= bookreview.author %>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">ジャンル</label>
+                <input type="text" name="bookreview[category]" class="form-control" id="category"
+                    value="<%= bookreview.category %>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="rate" class="form-label">評価</label>
+                <input type="range" class="form-control" name=bookreview[rating]" id="rate" min="1" max="5"
+                    value="<%= bookreview.rating%>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="comment" class="form-label">コメント</label>
+                <textarea name="bookreview[comment]" class="form-control" id="comment" rows="5" cols="33"
+                    required><%= bookreview.comment%></textarea>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">更新</button>
+        </form>
+    </div>
 
     <a href="/bookreview">一覧に戻る</a>
