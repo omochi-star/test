@@ -3,7 +3,9 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-const engine = require('ejs-mate');
+const ejsMate = require('ejs-mate');
+const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
 const Review = require('./models/bookreview');
 // const morgan = require('morgan');
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/bookreview';
@@ -21,13 +23,7 @@ mongoose.connect(dbUrl,
         console.log(err);
     });
 
-function wrapAsync(fn) {
-    return function (req, res, next) {
-        fn(req, res, next).catch(e => next(e));
-    }
-}
-
-app.engine('ejs', engine);
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -40,7 +36,7 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
-app.get('/bookreview', wrapAsync(async (req, res) => {
+app.get('/bookreview', catchAsync(async (req, res) => {
     const bookreviews = await Review.find({});
     const formattedReviews = bookreviews.map(bookreview => ({
         ...bookreview.toObject(),
@@ -50,7 +46,8 @@ app.get('/bookreview', wrapAsync(async (req, res) => {
     res.render('index', { formattedReviews });
 }));
 
-app.post('/bookreview', wrapAsync(async (req, res) => {
+app.post('/bookreview', catchAsync(async (req, res) => {
+    if (!req.body) throw new ExpressError('不正なデータです', 400);
     const bookreview = new Review(req.body.bookreview);
     await bookreview.save();
     res.redirect(`bookreview/${bookreview._id}`);
@@ -60,7 +57,7 @@ app.get('/bookreview/new', (req, res) => {
     res.render('new');
 })
 
-app.get('/bookreview/:id', wrapAsync(async (req, res) => {
+app.get('/bookreview/:id', catchAsync(async (req, res) => {
     const bookreview = await Review.findById(req.params.id);
     const dateStr = bookreview.createdAt.toLocaleDateString();
 
@@ -68,12 +65,12 @@ app.get('/bookreview/:id', wrapAsync(async (req, res) => {
 
 }));
 
-app.get('/bookreview/:id/edit', wrapAsync(async (req, res) => {
+app.get('/bookreview/:id/edit', catchAsync(async (req, res) => {
     const bookreview = await Review.findById(req.params.id);
     res.render('edit', { bookreview });
 }));
 
-app.put('/bookreview/:id', wrapAsync(async (req, res) => {
+app.put('/bookreview/:id', catchAsync(async (req, res) => {
 
     const { id } = req.params;
     const bookreview = await Review.findByIdAndUpdate(id, { ...req.body.bookreview });
@@ -81,11 +78,15 @@ app.put('/bookreview/:id', wrapAsync(async (req, res) => {
     res.redirect(`/bookreview/${bookreview._id}`)
 }));
 
-app.delete('/bookreview/:id', wrapAsync(async (req, res) => {
+app.delete('/bookreview/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Review.findByIdAndDelete(id);
     res.redirect('/bookreview');
 }));
+
+app.all(/(.*)/, (req, res, next) => {
+    next(new ExpressError('ページが見つかりませんでした', 404));
+});
 
 app.use((err, req, res, next) => {
     const { status = 500, message = '問題が発生しました' } = err;
