@@ -4,6 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const { bookreviewSchema } = require('./schemas');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const Review = require('./models/bookreview');
@@ -31,6 +32,15 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 // app.use(morgan('dev'));
+const validateBookreview = (req, res, next) => {
+    const { error } = bookreviewSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(detail => detail.message).join((','));
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -46,8 +56,8 @@ app.get('/bookreview', catchAsync(async (req, res) => {
     res.render('index', { formattedReviews });
 }));
 
-app.post('/bookreview', catchAsync(async (req, res) => {
-    if (!req.body) throw new ExpressError('不正なデータです', 400);
+app.post('/bookreview', validateBookreview, catchAsync(async (req, res) => {
+    // if (!req.body) throw new ExpressError('不正なデータです', 400);
     const bookreview = new Review(req.body.bookreview);
     await bookreview.save();
     res.redirect(`bookreview/${bookreview._id}`);
@@ -60,9 +70,7 @@ app.get('/bookreview/new', (req, res) => {
 app.get('/bookreview/:id', catchAsync(async (req, res) => {
     const bookreview = await Review.findById(req.params.id);
     const dateStr = bookreview.createdAt.toLocaleDateString();
-
     res.render('show', { bookreview, dateStr });
-
 }));
 
 app.get('/bookreview/:id/edit', catchAsync(async (req, res) => {
@@ -70,8 +78,7 @@ app.get('/bookreview/:id/edit', catchAsync(async (req, res) => {
     res.render('edit', { bookreview });
 }));
 
-app.put('/bookreview/:id', catchAsync(async (req, res) => {
-
+app.put('/bookreview/:id', validateBookreview, catchAsync(async (req, res) => {
     const { id } = req.params;
     const bookreview = await Review.findByIdAndUpdate(id, { ...req.body.bookreview });
     await bookreview.save();
@@ -89,8 +96,11 @@ app.all(/(.*)/, (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    const { status = 500, message = '問題が発生しました' } = err;
-    res.status(status).send(message);
+    const { statusCode = 500 } = err;
+    if (!err.message) {
+        err.message = '問題が発生しました'
+    }
+    res.status(statusCode).render('error', { err });
 });
 
 app.listen(3000, () => {
