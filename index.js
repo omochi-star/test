@@ -12,11 +12,7 @@ const bookreviewRoutes = require('./routes/bookreviews');
 // const morgan = require('morgan');
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/bookreview';
 
-mongoose.connect(dbUrl,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
+mongoose.connect(dbUrl)
     .then(() => {
         console.log('MongoDBコネクションOK！！');
     })
@@ -32,6 +28,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+
 // app.use(morgan('dev'));
 const validateBookreview = (req, res, next) => {
     const { error } = bookreviewSchema.validate(req.body);
