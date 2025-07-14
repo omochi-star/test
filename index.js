@@ -4,12 +4,14 @@ const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const { bookreviewSchema } = require('./schemas');
+const session = require('express-session');
+const flash = require('connect-flash');
 
+const { bookreviewSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
 const Review = require('./models/bookreview');
 const bookreviewRoutes = require('./routes/bookreviews');
-// const morgan = require('morgan');
+
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/bookreview';
 
 mongoose.connect(dbUrl)
@@ -29,7 +31,26 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-// app.use(morgan('dev'));
+const sessionConfig = {
+    secret: 'mysecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+};
+
+app.use(session(sessionConfig));
+
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+});
+
 const validateBookreview = (req, res, next) => {
     const { error } = bookreviewSchema.validate(req.body);
     if (error) {
