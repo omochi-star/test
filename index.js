@@ -7,6 +7,10 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
 
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
+
 const { bookreviewSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
 const Review = require('./models/bookreview');
@@ -27,7 +31,8 @@ app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
@@ -43,6 +48,12 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use(flash());
 
 app.use((req, res, next) => {
@@ -50,16 +61,6 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 });
-
-const validateBookreview = (req, res, next) => {
-    const { error } = bookreviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(detail => detail.message).join((','));
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
 
 app.get('/', (req, res) => {
     res.render('home');
