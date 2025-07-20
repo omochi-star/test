@@ -15,6 +15,7 @@ const { bookreviewSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
 const Review = require('./models/bookreview');
 const bookreviewRoutes = require('./routes/bookreviews');
+const userRoutes = require('./routes/users');
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/bookreview';
 
@@ -67,6 +68,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/bookreview', bookreviewRoutes);
+app.use('/', userRoutes);
 
 app.all(/(.*)/, (req, res, next) => {
     next(new ExpressError('ページが見つかりませんでした', 404));
