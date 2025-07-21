@@ -13,6 +13,9 @@ const validateBookreview = (req, res, next) => {
         next();
     }
 }
+const { isLoggedIn } = require('../middleware');
+
+// router.use(isLoggedIn);
 
 router.get('/', catchAsync(async (req, res) => {
     const bookreviews = await Review.find({});
@@ -24,14 +27,14 @@ router.get('/', catchAsync(async (req, res) => {
     res.render('index', { formattedReviews });
 }));
 
-router.post('/', validateBookreview, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateBookreview, catchAsync(async (req, res) => {
     const bookreview = new Review(req.body.bookreview);
     await bookreview.save();
     req.flash('success', '新しいブックレビューを登録しました');
     res.redirect(`bookreview/${bookreview._id}`);
 }));
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('new');
 });
 
@@ -45,7 +48,7 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('show', { bookreview, dateStr });
 }));
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
     const bookreview = await Review.findById(req.params.id);
     if (!bookreview) {
         req.flash('error', 'ブックレビューは見つかりませんでした');
@@ -54,7 +57,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
     res.render('edit', { bookreview });
 }));
 
-router.put('/:id', validateBookreview, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, validateBookreview, catchAsync(async (req, res) => {
     const { id } = req.params;
     const bookreview = await Review.findByIdAndUpdate(id, { ...req.body.bookreview });
     await bookreview.save();
@@ -62,7 +65,7 @@ router.put('/:id', validateBookreview, catchAsync(async (req, res) => {
     res.redirect(`/bookreview/${bookreview._id}`)
 }));
 
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
     await Review.findByIdAndDelete(id);
     req.flash('success', 'ブックレビューを削除しました');
