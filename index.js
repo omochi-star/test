@@ -11,10 +11,10 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 
-const { bookreviewSchema } = require('./schemas');
+const { reviewSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
-const Review = require('./models/bookreview');
-const bookreviewRoutes = require('./routes/bookreviews');
+const Review = require('./models/review');
+const bookreviewRoutes = require('./routes/books');
 const userRoutes = require('./routes/users');
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/bookreview';
