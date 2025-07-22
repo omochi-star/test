@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
+const { storeReturnTo } = require('../middleware');
 
 router.get('/register', (req, res) => {
     res.render('users/register');
@@ -27,10 +28,11 @@ router.get('/login', (req, res) => {
     res.render('users/login');
 });
 
-router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
+router.post('/login', storeReturnTo, passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
     const { username } = req.body;
     req.flash('success', `${username}さん、おかえりなさい！`);
-    res.redirect('/bookreview');
+    const redirectUrl = res.locals.returnTo || '/bookreview';
+    res.redirect(redirectUrl);
 });
 
 router.get('/logout', (req, res, next) => {
