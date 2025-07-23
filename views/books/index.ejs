@@ -1,0 +1,17 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="container">
+        <h3>
+            本一覧
+        </h3>
+        <ul>
+            <% for(let book of books) {%>
+                <li>
+                    <a href="books/<%= book._id  %>">
+                        <%=book.title %>
+                    </a>
+                </li>
+                <% } %>
+        </ul>
+        <a href="/books/new">新規登録へ</a>
+    </div>

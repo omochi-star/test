@@ -1,11 +1,10 @@
 const Joi = require("joi");
 
-module.exports.bookreviewSchema = Joi.object({
-    bookreview: Joi.object({
-        title: Joi.string().required(),
-        author: Joi.string(),
-        category: Joi.string(),
-        rating: Joi.number(),
-        comment: Joi.string(),
+module.exports.reviewSchema = Joi.object({
+    review: Joi.object({
+        content: Joi.string().required(),
+        rating: Joi.number()
+        // owner: Joi.string(),
+        // category: Joi.string(),
     }).required()
 })

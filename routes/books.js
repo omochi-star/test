@@ -3,9 +3,10 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Review = require('../models/review');
-const { bookreviewSchema } = require('../schemas');
-const validateBookreview = (req, res, next) => {
-    const { error } = bookreviewSchema.validate(req.body);
+const Book = require('../models/book');
+const { reviewSchema } = require('../schemas');
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(detail => detail.message).join((','));
         throw new ExpressError(msg, 400)
@@ -18,51 +19,52 @@ const { isLoggedIn } = require('../middleware');
 router.use(isLoggedIn);
 
 router.get('/', catchAsync(async (req, res) => {
-    const bookreviews = await Review.find({});
-    const formattedReviews = bookreviews.map(bookreview => ({
-        ...bookreview.toObject(),
-        createdAtFormatted: bookreview.createdAt.toLocaleDateString('ja-JP'),
-        updatedAtFormatted: bookreview.updatedAt.toLocaleDateString('ja-JP')
-    }));
-    res.render('index', { formattedReviews });
+    const books = await Book.find({});
+    // const formattedReviews = reviews.map(review => ({
+    //     ...review.toObject(),
+    //     createdAtFormatted: review.createdAt.toLocaleDateString('ja-JP'),
+    //     updatedAtFormatted: review.updatedAt.toLocaleDateString('ja-JP')
+    // }));
+    res.render('books/index', { books });
 }));
 
-router.post('/', validateBookreview, catchAsync(async (req, res) => {
-    const bookreview = new Review(req.body.bookreview);
-    await bookreview.save();
-    req.flash('success', '新しいブックレビューを登録しました');
-    res.redirect(`bookreview/${bookreview._id}`);
+// router.post('/', validateReview, catchAsync(async (req, res) => {
+router.post('/', catchAsync(async (req, res) => {
+
+    const book = new Book(req.body.books);
+    await book.save();
+    req.flash('success', '新しい本を登録しました');
+    res.redirect(`books/${book._id}`);
 }));
 
 router.get('/new', (req, res) => {
-    res.render('new');
+    res.render('books/new');
 });
 
 router.get('/:id', catchAsync(async (req, res) => {
-    const bookreview = await Review.findById(req.params.id);
-    if (!bookreview) {
-        req.flash('error', 'ブックレビューは見つかりませんでした');
-        return res.redirect('/bookreview');
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+        req.flash('error', '本の詳細ページは見つかりませんでした');
+        return res.redirect('/books');
     }
-    const dateStr = bookreview.createdAt.toLocaleDateString();
-    res.render('show', { bookreview, dateStr });
+    res.render('books/show', { book });
 }));
 
 router.get('/:id/edit', catchAsync(async (req, res) => {
-    const bookreview = await Review.findById(req.params.id);
-    if (!bookreview) {
+    const review = await Review.findById(req.params.id);
+    if (!review) {
         req.flash('error', 'ブックレビューは見つかりませんでした');
         return res.redirect('/bookreview');
     }
-    res.render('edit', { bookreview });
+    res.render('edit', { review });
 }));
 
-router.put('/:id', validateBookreview, catchAsync(async (req, res) => {
+router.put('/:id', validateReview, catchAsync(async (req, res) => {
     const { id } = req.params;
-    const bookreview = await Review.findByIdAndUpdate(id, { ...req.body.bookreview });
-    await bookreview.save();
+    const review = await Review.findByIdAndUpdate(id, { ...req.body.review });
+    await review.save();
     req.flash('success', 'ブックレビューを更新しました');
-    res.redirect(`/bookreview/${bookreview._id}`)
+    res.redirect(`/bookreview/${review._id}`)
 }));
 
 router.delete('/:id', catchAsync(async (req, res) => {
