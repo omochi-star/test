@@ -15,7 +15,10 @@ const { reviewSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
 const Review = require('./models/review');
 const bookRoutes = require('./routes/books');
+const reviewRoutes = require('./routes/reviews')
 const userRoutes = require('./routes/users');
+
+const { isLoggedIn } = require('./middleware');
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/bookreview';
 
@@ -68,7 +71,15 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
+//ログインしているユーザのレビュー一覧表示
+app.get('/my/reviews', isLoggedIn, async (req, res) => {
+    const userId = req.user._id;
+    const myReviews = await Review.find({ author: userId }).populate('book');
+    res.render('myReview', { myReviews });
+});
+
 app.use('/books', bookRoutes);
+app.use('/reviews', reviewRoutes);
 app.use('/', userRoutes);
 
 app.all(/(.*)/, (req, res, next) => {

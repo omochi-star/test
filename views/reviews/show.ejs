@@ -1,0 +1,14 @@
+<% layout('layouts/boilerplate') %>
+    <h4>
+        <%=review.book.title %>
+    </h4>
+    <div class="card mb-3 mt-3">
+        <div class="card-body">
+            <p>
+                内容：<%= review.content %>
+            </p>
+            <p>
+                評価：<%= review.rating %>
+            </p>
+        </div>
+    </div>

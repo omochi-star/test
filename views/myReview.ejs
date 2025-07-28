@@ -1,17 +1,15 @@
 <% layout('layouts/boilerplate') %>
-
     <div class="container">
         <h3>
-            本を探す
+            My読書記録
         </h3>
         <ul>
-            <% for(let book of books) {%>
+            <% for(let review of myReviews) {%>
                 <li>
-                    <a href="books/<%= book._id  %>">
-                        <%=book.title %>
+                    <a href="reviews/<%= review._id  %>">
+                        <%=review.book.title %>
                     </a>
                 </li>
                 <% } %>
         </ul>
-        <a href="/books/new">新規登録へ</a>
     </div>

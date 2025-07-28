@@ -74,4 +74,26 @@ router.delete('/:id', catchAsync(async (req, res) => {
     res.redirect('/bookreview');
 }));
 
+//本に対するレビュー投稿フォーム表示
+router.get('/:bookId/reviews/new', async (req, res) => {
+    const { bookId } = req.params;
+    const book = await Book.findById(bookId);
+    res.render('reviews/new', { book, bookId });
+})
+
+//レビュー登録
+router.post('/:bookId/reviews', catchAsync(async (req, res) => {
+    const { content, rating } = req.body;
+    const book = await Book.findById(req.params.bookId);
+    const review = new Review({
+        content, rating,
+        book: book._id,
+        author: req.user._id
+    });
+    await review.save();
+    req.flash('success', 'レビューを登録しました');
+    res.redirect(`/reviews/${review._id}`);
+}));
+
+
 module.exports = router;

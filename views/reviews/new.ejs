@@ -1,0 +1,26 @@
+<% layout('layouts/boilerplate') %>
+    <h3 class="text-center">
+        <b>
+            <%= book.title %>
+        </b>のレビュー記録
+    </h3>
+    <div class="offset-md-3 col-md-6">
+        <form action="/books/<%= bookId %>/reviews" method="POST" class="validated-form" novalidate>
+            <input type="hidden" name="book" value="<%= book._id %>">
+            <div class="mb-3">
+                <label for="content" class="form-label">レビュー</label>
+                <textarea name="content" class="form-control" id="content" required></textarea>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="rate" class="form-label">評価</label>
+                <input type="range" class="form-control" name="rating" id="rate" min="1" max="5" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">登録</button>
+        </form>
+    </div>

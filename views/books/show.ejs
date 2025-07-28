@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate') %>
     <h4>
-        「<%= book.title %>」の感想
+        「<%= book.title %>」
     </h4>
     <div class="card mb-3 mt-3">
         <div class="card-body">
@@ -9,6 +9,9 @@
             </p>
         </div>
     </div>
+
+    <a href="/books/<%= book._id  %>/reviews/new">本のレビューを投稿する</a>
+
     <a class="btn btn-primary" href="/bookreview/<%= book._id%>/edit" role="button">編集</a>
     <form class="d-inline" action="/bookreview/<%= book._id%>?_method=DELETE" method="POST">
         <button class="btn btn-danger">削除</button>
