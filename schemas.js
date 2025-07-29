@@ -9,7 +9,7 @@ module.exports.reviewSchema = Joi.object({
 });
 
 module.exports.bookSchema = Joi.object({
-    book: Joi.object({
+    books: Joi.object({
         title: Joi.string().required(),
         author: Joi.string().required(),
         isbn: Joi.string(),

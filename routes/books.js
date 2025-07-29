@@ -39,7 +39,7 @@ router.get('/', catchAsync(async (req, res) => {
     res.render('books/index', { books });
 }));
 
-router.post('/', validateReview, catchAsync(async (req, res) => {
+router.post('/', validateBook, catchAsync(async (req, res) => {
     const book = new Book(req.body.books);
     await book.save();
     req.flash('success', '新しい本を登録しました');

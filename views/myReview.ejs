@@ -6,9 +6,11 @@
         <ul>
             <% for(let review of myReviews) {%>
                 <li>
-                    <a href="reviews/<%= review._id  %>">
-                        <%=review.book.title %>
-                    </a>
+                    <%=review.book.title %>
+                        <%=review.rating %>
+                            <a href="/reviews/<%= review._id  %>">
+                                レビュー詳細へ
+                            </a>
                 </li>
                 <% } %>
         </ul>
