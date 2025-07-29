@@ -11,7 +11,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 
-const { reviewSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
 const Review = require('./models/review');
 const bookRoutes = require('./routes/books');
@@ -39,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+
 
 const sessionConfig = {
     secret: 'mysecret',
