@@ -16,7 +16,7 @@ router.post('/register', async (req, res, next) => {
         req.login(registeredUser, err => {
             if (err) return next(err);
             req.flash('success', 'ユーザーを新規登録しました');
-            res.redirect('/bookreview');
+            res.redirect('/my/reviews');
         })
     } catch (e) {
         req.flash('error', e.message);
@@ -31,7 +31,7 @@ router.get('/login', (req, res) => {
 router.post('/login', storeReturnTo, passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
     const { username } = req.body;
     req.flash('success', `${username}さん、おかえりなさい！`);
-    const redirectUrl = res.locals.returnTo || '/bookreview';
+    const redirectUrl = res.locals.returnTo || '/my/reviews';
     res.redirect(redirectUrl);
 });
 
@@ -39,7 +39,7 @@ router.get('/logout', (req, res, next) => {
     req.logout(function (err) {
         if (err) { return next(err); }
         req.flash('success', 'ログアウトしました')
-        res.redirect('/bookreview');
+        res.redirect('/');
     });
 });
 
