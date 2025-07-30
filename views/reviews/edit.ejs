@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+    <h3 class="text-center">
+        <b>
+            <%= review.book.title %>
+        </b>のレビューを編集
+    </h3>
+    <div class="offset-md-3 col-md-6">
+        <form action="/reviews/<%= review._id %>?_method=PUT" method="POST" class="validated-form" novalidate>
+            <div class="mb-3">
+                <label for="content" class="form-label">レビュー</label>
+                <textarea name="review[content]" class="form-control" id="content"
+                    required><%= review.content %></textarea>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="rate" class="form-label">評価</label>
+                <input type="range" class="form-control" name="review[rating]" id="rate" min="1" max="5"
+                    value="<%= review.rating  %>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">更新</button>
+        </form>
+    </div>

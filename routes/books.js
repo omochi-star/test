@@ -27,7 +27,7 @@ const validateReview = (req, res, next) => {
     }
 }
 
-router.use(isLoggedIn);
+// router.use(isLoggedIn);
 
 router.get('/', catchAsync(async (req, res) => {
     const books = await Book.find({});
@@ -39,14 +39,14 @@ router.get('/', catchAsync(async (req, res) => {
     res.render('books/index', { books });
 }));
 
-router.post('/', validateBook, catchAsync(async (req, res) => {
+router.post('/', validateBook, isLoggedIn, catchAsync(async (req, res) => {
     const book = new Book(req.body.books);
     await book.save();
     req.flash('success', '新しい本を登録しました');
     res.redirect(`books/${book._id}`);
 }));
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('books/new');
 });
 
@@ -84,14 +84,14 @@ router.get('/:id', catchAsync(async (req, res) => {
 // }));
 
 //本に対するレビュー投稿フォーム表示
-router.get('/:bookId/reviews/new', async (req, res) => {
+router.get('/:bookId/reviews/new', isLoggedIn, async (req, res) => {
     const { bookId } = req.params;
     const book = await Book.findById(bookId);
     res.render('reviews/new', { book, bookId });
 });
 
 //レビュー登録
-router.post('/:bookId/reviews', validateReview, catchAsync(async (req, res) => {
+router.post('/:bookId/reviews', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     const book = await Book.findById(req.params.bookId);
     if (!book) {
         throw new ExpressError('Book not found', 404);

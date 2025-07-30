@@ -12,3 +12,8 @@
             </p>
         </div>
     </div>
+
+    <a class="btn btn-primary" href="/reviews/<%= review._id%>/edit" role="button">編集</a>
+    <form class="d-inline" action="/reviews/<%= review._id%>?_method=DELETE" method="POST">
+        <button class="btn btn-danger">削除</button>
+    </form>
