@@ -7,12 +7,17 @@
             <p>
                 著者：<%= book.author %>
             </p>
+
         </div>
     </div>
 
-    <a href="/books/<%= book._id  %>/reviews/new">本のレビューを投稿する</a>
+    <% if(currentUser){ %>
+        <a href="/books/<%= book._id  %>/reviews/new">本のレビューを投稿する</a>
+        <% } %>
 
-    <a class="btn btn-primary" href="/bookreview/<%= book._id%>/edit" role="button">編集</a>
-    <form class="d-inline" action="/bookreview/<%= book._id%>?_method=DELETE" method="POST">
-        <button class="btn btn-danger">削除</button>
-    </form>
+            <% if(currentUser && book.owner.equals(currentUser._id)){ %>
+                <a class="btn btn-primary" href="/books/<%= book._id%>/edit" role="button">編集</a>
+                <form class="d-inline" action="/books/<%= book._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">削除</button>
+                </form>
+                <% } %>

@@ -13,5 +13,7 @@
                 </li>
                 <% } %>
         </ul>
-        <a href="/books/new">新規登録へ</a>
+        <% if(currentUser){ %>
+            <a href="/books/new">新規登録へ</a>
+            <% } %>
     </div>

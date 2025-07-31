@@ -7,7 +7,11 @@ const bookSchema = new mongoose.Schema({
     isbn: String,
     category: String,
     coverImageUrl: String,
-    description: String
+    description: String,
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 module.exports = mongoose.model('Book', bookSchema);

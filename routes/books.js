@@ -4,28 +4,10 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Review = require('../models/review');
 const Book = require('../models/book');
-const { bookSchema, reviewSchema } = require('../schemas');
-const { isLoggedIn } = require('../middleware');
 
-const validateBook = (req, res, next) => {
-    const { error } = bookSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(detail => detail.message).join((','));
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
+const { isLoggedIn, validateBook, validateReview } = require('../middleware');
 
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(detail => detail.message).join((','));
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
+
 
 // router.use(isLoggedIn);
 
@@ -41,6 +23,7 @@ router.get('/', catchAsync(async (req, res) => {
 
 router.post('/', validateBook, isLoggedIn, catchAsync(async (req, res) => {
     const book = new Book(req.body.books);
+    book.owner = req.user._id;
     await book.save();
     req.flash('success', '新しい本を登録しました');
     res.redirect(`books/${book._id}`);
@@ -59,29 +42,29 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('books/show', { book });
 }));
 
-// router.get('/:id/edit', catchAsync(async (req, res) => {
-//     const review = await Review.findById(req.params.id);
-//     if (!review) {
-//         req.flash('error', 'ブックレビューは見つかりませんでした');
-//         return res.redirect('/bookreview');
-//     }
-//     res.render('edit', { review });
-// }));
+router.get('/:id/edit', catchAsync(async (req, res) => {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+        req.flash('error', '本は見つかりませんでした');
+        return res.redirect('/books');
+    }
+    res.render('books/edit', { book });
+}));
 
-// router.put('/:id', validateReview, catchAsync(async (req, res) => {
-//     const { id } = req.params;
-//     const review = await Review.findByIdAndUpdate(id, { ...req.body.review });
-//     await review.save();
-//     req.flash('success', 'ブックレビューを更新しました');
-//     res.redirect(`/bookreview/${review._id}`)
-// }));
+router.put('/:id', validateBook, catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const book = await Book.findByIdAndUpdate(id, { ...req.body.books });
+    await book.save();
+    req.flash('success', '本の情報を更新しました');
+    res.redirect(`/books/${book._id}`);
+}));
 
-// router.delete('/:id', catchAsync(async (req, res) => {
-//     const { id } = req.params;
-//     await Review.findByIdAndDelete(id);
-//     req.flash('success', 'ブックレビューを削除しました');
-//     res.redirect('/bookreview');
-// }));
+router.delete('/:id', catchAsync(async (req, res) => {
+    const { id } = req.params;
+    await Book.findByIdAndDelete(id);
+    req.flash('success', '本を削除しました');
+    res.redirect('/books');
+}));
 
 //本に対するレビュー投稿フォーム表示
 router.get('/:bookId/reviews/new', isLoggedIn, async (req, res) => {
