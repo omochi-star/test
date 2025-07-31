@@ -75,6 +75,7 @@ app.get('/', (req, res) => {
 app.get('/my/reviews', isLoggedIn, async (req, res) => {
     const userId = req.user._id;
     const myReviews = await Review.find({ owner: userId }).populate('book');
+
     res.render('myReview', { myReviews });
 });
 

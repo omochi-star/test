@@ -1,6 +1,7 @@
 const ExpressError = require('./utils/ExpressError');
 const { bookSchema, reviewSchema } = require('./schemas');
 const Review = require('./models/review');
+const Book = require('./models/book');
 
 module.exports.isLoggedIn = function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
@@ -18,7 +19,17 @@ module.exports.storeReturnTo = (req, res, next) => {
     next();
 }
 
-module.exports.isAuthor = async (req, res, next) => {
+module.exports.isBookOwner = async (req, res, next) => {
+    const { bookId } = req.params;
+    const book = await Book.findById(bookId);
+    if (!book.owner.equals(req.user._id)) {
+        req.flash('error', 'そのアクションの権限がありません');
+        return res.redirect(`/books/${bookId}`);
+    }
+    next();
+}
+
+module.exports.isReviewOwner = async (req, res, next) => {
     const { reviewId } = req.params;
     const review = await Review.findById(reviewId);
     if (!review.owner.equals(req.user._id)) {

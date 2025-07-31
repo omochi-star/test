@@ -4,14 +4,16 @@
             My読書記録
         </h3>
         <ul>
-            <% for(let review of myReviews) {%>
-                <li>
-                    <%=review.book.title %>
-                        <%=review.rating %>
-                            <a href="/reviews/<%= review._id  %>">
-                                レビュー詳細へ
-                            </a>
-                </li>
-                <% } %>
+            <% if(myReviews){ %>
+                <% for(let review of myReviews) {%>
+                    <li>
+                        <%=review.book.title %>
+                            <%=review.rating %>
+                                <a href="/reviews/<%= review._id  %>">
+                                    レビュー詳細へ
+                                </a>
+                    </li>
+                    <% } %>
+                        <% } %>
         </ul>
     </div>

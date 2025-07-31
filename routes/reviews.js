@@ -3,7 +3,7 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const Review = require('../models/review');
 
-const { isLoggedIn, isAuthor, validateReview } = require('../middleware');
+const { isLoggedIn, isReviewOwner, validateReview } = require('../middleware');
 
 // レビューの詳細ページ表示
 router.get('/:reviewId', async (req, res) => {
@@ -16,7 +16,7 @@ router.get('/:reviewId', async (req, res) => {
 });
 
 // レビュー編集フォーム
-router.get('/:reviewId/edit', isLoggedIn, isAuthor, async (req, res) => {
+router.get('/:reviewId/edit', isLoggedIn, isReviewOwner, async (req, res) => {
     const { reviewId } = req.params;
     const review = await Review.findById(reviewId).populate('book');
     if (!review) {
@@ -27,7 +27,7 @@ router.get('/:reviewId/edit', isLoggedIn, isAuthor, async (req, res) => {
 });
 
 // レビュー更新
-router.put('/:reviewId', isLoggedIn, isAuthor, validateReview, async (req, res) => {
+router.put('/:reviewId', isLoggedIn, isReviewOwner, validateReview, async (req, res) => {
     const { reviewId } = req.params;
     const { content, rating } = req.body.review;
     const updateReview = await Review.findByIdAndUpdate(reviewId, { content, rating }, { new: true });
@@ -37,7 +37,7 @@ router.put('/:reviewId', isLoggedIn, isAuthor, validateReview, async (req, res) 
 });
 
 // レビュー削除
-router.delete('/:reviewId', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
+router.delete('/:reviewId', isLoggedIn, isReviewOwner, catchAsync(async (req, res) => {
     const { reviewId } = req.params;
     await Review.findByIdAndDelete(reviewId);
     req.flash('success', 'ブックレビューを削除しました');

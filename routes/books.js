@@ -5,7 +5,7 @@ const ExpressError = require('../utils/ExpressError');
 const Review = require('../models/review');
 const Book = require('../models/book');
 
-const { isLoggedIn, validateBook, validateReview } = require('../middleware');
+const { isLoggedIn, validateBook, validateReview, isBookOwner } = require('../middleware');
 
 
 
@@ -21,6 +21,10 @@ router.get('/', catchAsync(async (req, res) => {
     res.render('books/index', { books });
 }));
 
+router.get('/new', isLoggedIn, (req, res) => {
+    res.render('books/new');
+});
+
 router.post('/', validateBook, isLoggedIn, catchAsync(async (req, res) => {
     const book = new Book(req.body.books);
     book.owner = req.user._id;
@@ -29,12 +33,9 @@ router.post('/', validateBook, isLoggedIn, catchAsync(async (req, res) => {
     res.redirect(`books/${book._id}`);
 }));
 
-router.get('/new', isLoggedIn, (req, res) => {
-    res.render('books/new');
-});
-
-router.get('/:id', catchAsync(async (req, res) => {
-    const book = await Book.findById(req.params.id);
+router.get('/:bookId', catchAsync(async (req, res) => {
+    const { bookId } = req.params;
+    const book = await Book.findById(bookId);
     if (!book) {
         req.flash('error', '本の詳細ページは見つかりませんでした');
         return res.redirect('/books');
@@ -42,8 +43,9 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('books/show', { book });
 }));
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
-    const book = await Book.findById(req.params.id);
+router.get('/:bookId/edit', isLoggedIn, isBookOwner, catchAsync(async (req, res) => {
+    const { bookId } = req.params;
+    const book = await Book.findById(bookId);
     if (!book) {
         req.flash('error', '本は見つかりませんでした');
         return res.redirect('/books');
@@ -51,17 +53,17 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
     res.render('books/edit', { book });
 }));
 
-router.put('/:id', validateBook, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const book = await Book.findByIdAndUpdate(id, { ...req.body.books });
+router.put('/:bookId', isLoggedIn, isBookOwner, validateBook, catchAsync(async (req, res) => {
+    const { bookId } = req.params;
+    const book = await Book.findByIdAndUpdate(bookId, { ...req.body.books });
     await book.save();
     req.flash('success', '本の情報を更新しました');
     res.redirect(`/books/${book._id}`);
 }));
 
-router.delete('/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Book.findByIdAndDelete(id);
+router.delete('/:bookId', isLoggedIn, isBookOwner, catchAsync(async (req, res) => {
+    const { bookId } = req.params;
+    await Book.findByIdAndDelete(bookId);
     req.flash('success', '本を削除しました');
     res.redirect('/books');
 }));
@@ -75,7 +77,8 @@ router.get('/:bookId/reviews/new', isLoggedIn, async (req, res) => {
 
 //レビュー登録
 router.post('/:bookId/reviews', isLoggedIn, validateReview, catchAsync(async (req, res) => {
-    const book = await Book.findById(req.params.bookId);
+    const { bookId } = req.params;
+    const book = await Book.findById(bookId);
     if (!book) {
         throw new ExpressError('Book not found', 404);
     }
