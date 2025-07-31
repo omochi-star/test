@@ -6,7 +6,6 @@
     </h3>
     <div class="offset-md-3 col-md-6">
         <form action="/books/<%= bookId %>/reviews" method="POST" class="validated-form" novalidate>
-            <input type="hidden" name="review[book]" value="<%= book._id %>">
             <div class="mb-3">
                 <label for="content" class="form-label">レビュー</label>
                 <textarea name="review[content]" class="form-control" id="content" required></textarea>
