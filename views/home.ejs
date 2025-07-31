@@ -1,4 +1,20 @@
 <% layout('layouts/boilerplate') %>
 
-    <h1>ホーム</h1>
-    <a href="/bookreview">読書記録へ</a>
+    <h1>読書記録とは？</h1>
+
+    <p>本を読んだら、一言でも感想を書いておくと、より印象に残ります。<br>
+        この読書記録アプリは、あなたの「読書メモ」をシンプルに残します！</p>
+
+    <% if(currentUser){ %>
+        <a href="/my/reviews">My読書記録へ</a>
+        <% }else{ %>
+            <div>
+                ユーザー登録をして読書記録をしましょう！
+                <a class="btn btn-primary" href="/register" role="button">ユーザー登録</a>
+            </div>
+            or
+            <div>
+                ユーザー登録はお済みですか？
+                <a class="btn btn-primary" href="/login" role="button">ログイン</a>
+            </div>
+            <% } %>
