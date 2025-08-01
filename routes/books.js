@@ -21,7 +21,7 @@ router.put('/:bookId', isLoggedIn, isBookOwner, validateBook, catchAsync(books.u
 router.delete('/:bookId', isLoggedIn, isBookOwner, catchAsync(books.deleteBook));
 
 //本に対するレビュー投稿フォーム表示
-router.get('/:bookId/reviews/new', isLoggedIn, reviews.renderNewForm);
+router.get('/:bookId/reviews/new', isLoggedIn, catchAsync(reviews.renderNewForm));
 
 //レビュー登録
 router.post('/:bookId/reviews', isLoggedIn, validateReview, catchAsync(reviews.createReview));
