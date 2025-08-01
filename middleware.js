@@ -8,6 +8,7 @@ module.exports.isLoggedIn = function isLoggedIn(req, res, next) {
         return next(); // 認証済み → 次の処理へ
     }
     req.session.returnTo = req.originalUrl;
+
     req.flash('error', 'ログインしてください');
     res.redirect('/login'); // 未ログイン → ログインページへ
 }

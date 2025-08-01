@@ -25,6 +25,9 @@ router.post('/register', async (req, res, next) => {
 });
 
 router.get('/login', (req, res) => {
+    if (req.query.returnTo) {
+        req.session.returnTo = req.query.returnTo;
+    }
     res.render('users/login');
 });
 

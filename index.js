@@ -67,6 +67,11 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    res.locals.req = req; // EJSからreq.originalUrlを使えるようにする
+    next();
+});
+
 app.get('/', (req, res) => {
     res.render('home');
 });
