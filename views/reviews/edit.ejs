@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate') %>
+    <link rel="stylesheet" href="/stylesheets/stars.css">
     <h3 class="text-center">
         <b>
             <%= review.book.title %>
@@ -15,12 +16,29 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="rate" class="form-label">評価</label>
-                <input type="range" class="form-control" name="review[rating]" id="rate" min="1" max="5"
-                    value="<%= review.rating  %>" required>
-                <div class="valid-feedback">
-                    OK!
-                </div>
+                <fieldset class="starability-basic">
+                    <legend>評価:</legend>
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" <% if (review.rating===1) {
+                        %>checked<% } %> />
+                        <label for="first-rate1" title="1">1 star</label>
+
+                        <input type="radio" id="first-rate2" name="review[rating]" value="2" <% if (review.rating===2) {
+                            %>checked<% } %> />
+                            <label for="first-rate2" title="2">2 stars</label>
+
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" <% if
+                                (review.rating===3) { %>checked<% } %> />
+                                <label for="first-rate3" title="3">3 stars</label>
+
+                                <input type="radio" id="first-rate4" name="review[rating]" value="4" <% if
+                                    (review.rating===4) { %>checked<% } %> />
+                                    <label for="first-rate4" title="4">4 stars</label>
+
+                                    <input type="radio" id="first-rate5" name="review[rating]" value="5" <% if
+                                        (review.rating===5) { %>checked<% } %> />
+                                        <label for="first-rate5" title="5">5 stars</label>
+                </fieldset>
+
             </div>
             <button type="submit" class="btn btn-primary">更新</button>
         </form>
