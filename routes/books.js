@@ -6,24 +6,21 @@ const books = require('../controllers/books');
 const reviews = require('../controllers/reviews');
 const { isLoggedIn, validateBook, validateReview, isBookOwner } = require('../middleware');
 
-router.get('/', catchAsync(books.index));
+router.route('/')
+    .get(catchAsync(books.index))
+    .post(validateBook, isLoggedIn, catchAsync(books.createBook));
 
 router.get('/new', isLoggedIn, books.renderNewForm);
 
-router.post('/', validateBook, isLoggedIn, catchAsync(books.createBook));
-
-router.get('/:bookId', catchAsync(books.showBook));
+router.route('/:bookId')
+    .get(catchAsync(books.showBook))
+    .put(isLoggedIn, isBookOwner, validateBook, catchAsync(books.updateBook))
+    .delete(isLoggedIn, isBookOwner, catchAsync(books.deleteBook));
 
 router.get('/:bookId/edit', isLoggedIn, isBookOwner, catchAsync(books.renderEditForm));
 
-router.put('/:bookId', isLoggedIn, isBookOwner, validateBook, catchAsync(books.updateBook));
-
-router.delete('/:bookId', isLoggedIn, isBookOwner, catchAsync(books.deleteBook));
-
-//本に対するレビュー投稿フォーム表示
 router.get('/:bookId/reviews/new', isLoggedIn, catchAsync(reviews.renderNewForm));
 
-//レビュー登録
 router.post('/:bookId/reviews', isLoggedIn, validateReview, catchAsync(reviews.createReview));
 
 module.exports = router;
