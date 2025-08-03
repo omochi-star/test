@@ -2,11 +2,6 @@ const Book = require('../models/book');
 
 module.exports.index = async (req, res) => {
     const books = await Book.find({});
-    // const formattedReviews = reviews.map(review => ({
-    //     ...review.toObject(),
-    //     createdAtFormatted: review.createdAt.toLocaleDateString('ja-JP'),
-    //     updatedAtFormatted: review.updatedAt.toLocaleDateString('ja-JP')
-    // }));
     res.render('books/index', { books });
 }
 

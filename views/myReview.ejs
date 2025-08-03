@@ -1,22 +1,44 @@
 <% layout('layouts/boilerplate') %>
+    <link rel="stylesheet" href="/stylesheets/stars.css">
     <div class="container">
-        <h3>
+        <h2>
             My読書記録
-        </h3>
+        </h2>
+        <% for(let review of reviews) {%>
+            <div class="row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h4 class="card-title book-title mb-3">
+                                <a href="/books/<%= review.book._id%>">
+                                    <%=review.book.title %>
+                                </a>
+                            </h4>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">
+                                <%= review.book.author %>
+                            </h6>
+                            <p class="starability-result" data-rating="<%= review.rating %>">
+                                評価: <%= review.rating %>
+                            </p>
+                            <p class="card-text">
+                                <%= review.content %>
+                            </p>
+                            <% if(currentUser && review.owner.equals(currentUser._id)){ %>
+                                <a class="btn btn-primary" href="/reviews/<%= review._id%>/edit" role="button">編集</a>
+                                <form class="d-inline" action="/reviews/<%= review._id%>?_method=DELETE" method="POST">
+                                    <button class="btn btn-danger">削除</button>
+                                </form>
+                                <% } %>
+                        </div>
+                        <div class="card-footer text-body-secondary">
+                            <p>投稿日: <%= review.formattedDate %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
 
-        <ul>
+                <a href="/books">本を探す</a>
 
-            <% for(let review of myReviews) {%>
-                <li>
-
-                    <%=review.book.title %>
-                        <%=review.rating %>
-                            <a href="/reviews/<%= review._id  %>">
-                                レビュー詳細へ
-                            </a>
-                </li>
-                <% } %>
-
-                    <a href="/books">本を探す</a>
-        </ul>
     </div>

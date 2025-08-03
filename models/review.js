@@ -6,7 +6,6 @@ const reviewSchema = new mongoose.Schema({
     rating: Number,
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
     book: { type: Schema.Types.ObjectId, ref: 'Book' },
-    createdAt: { type: Date, default: Date.now }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Review', reviewSchema);
