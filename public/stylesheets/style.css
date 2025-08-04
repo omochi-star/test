@@ -8,3 +8,18 @@ body {
     color: #001C2E !important;
 
 }
+
+.multiline-ellipsis {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    /* 最大3行まで表示 */
+    line-height: 1.5em;
+    max-height: 4.5em;
+    /* 行数 × line-height */
+}
+
+.book-title {
+    font-weight: bold;
+}

@@ -1,18 +1,16 @@
 <% layout('layouts/boilerplate') %>
     <link rel="stylesheet" href="/stylesheets/stars.css">
     <div class="container">
-        <h2>
+        <h1 class="text-center mb-3 ">
             My読書記録
-        </h2>
+        </h1>
         <% for(let review of reviews) {%>
             <div class="row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="offset-md-2 col-md-8">
                     <div class="card mb-3">
                         <div class="card-body">
                             <h4 class="card-title book-title mb-3">
-                                <a href="/books/<%= review.book._id%>">
-                                    <%=review.book.title %>
-                                </a>
+                                <%=review.book.title %>
                             </h4>
                             <h6 class="card-subtitle mb-2 text-body-secondary">
                                 <%= review.book.author %>
@@ -20,25 +18,18 @@
                             <p class="starability-result" data-rating="<%= review.rating %>">
                                 評価: <%= review.rating %>
                             </p>
-                            <p class="card-text">
+                            <p class="card-text multiline-ellipsis">
                                 <%= review.content %>
                             </p>
-                            <% if(currentUser && review.owner.equals(currentUser._id)){ %>
-                                <a class="btn btn-primary" href="/reviews/<%= review._id%>/edit" role="button">編集</a>
-                                <form class="d-inline" action="/reviews/<%= review._id%>?_method=DELETE" method="POST">
-                                    <button class="btn btn-danger">削除</button>
-                                </form>
-                                <% } %>
+                            <a href="/reviews/<%= review._id %>">レビュー詳細へ</a>
                         </div>
                         <div class="card-footer text-body-secondary">
                             <p>投稿日: <%= review.formattedDate %>
                             </p>
                         </div>
                     </div>
+
                 </div>
             </div>
             <% } %>
-
-                <a href="/books">本を探す</a>
-
     </div>
