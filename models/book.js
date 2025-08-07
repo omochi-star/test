@@ -7,7 +7,10 @@ const bookSchema = new mongoose.Schema({
     author: String,
     isbn: String,
     category: String,
-    coverImageUrl: String,
+    images: [{
+        url: String,
+        filename: String
+    }],
     description: String,
     owner: {
         type: Schema.Types.ObjectId,

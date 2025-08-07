@@ -5,10 +5,13 @@ const ExpressError = require('../utils/ExpressError');
 const books = require('../controllers/books');
 const reviews = require('../controllers/reviews');
 const { isLoggedIn, validateBook, validateReview, isBookOwner } = require('../middleware');
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 router.route('/')
     .get(catchAsync(books.index))
-    .post(validateBook, isLoggedIn, catchAsync(books.createBook));
+    .post(isLoggedIn, upload.array('image'), validateBook, catchAsync(books.createBook));
 
 router.get('/new', isLoggedIn, books.renderNewForm);
 

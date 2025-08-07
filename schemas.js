@@ -13,7 +13,7 @@ module.exports.bookSchema = Joi.object({
         author: Joi.string().required(),
         isbn: Joi.string(),
         category: Joi.string(),
-        coverImageUrl: Joi.string(),
+        // images: Joi.string(),
         description: Joi.string(),
     }).required()
 });
