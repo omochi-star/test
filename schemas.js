@@ -15,5 +15,6 @@ module.exports.bookSchema = Joi.object({
         category: Joi.string(),
         // images: Joi.string(),
         description: Joi.string(),
-    }).required()
+    }).required(),
+    deleteImages: Joi.array()
 });

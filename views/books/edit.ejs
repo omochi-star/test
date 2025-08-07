@@ -2,7 +2,8 @@
 
     <h1 class="text-center">編集</h1>
     <div class="offset-md-3 col-md-6">
-        <form action="/books/<%= book._id %>?_method=PUT" method="POST" class="validated-form" novalidate>
+        <form action="/books/<%= book._id %>?_method=PUT" method="POST" class="validated-form" novalidate
+            enctype="multipart/form-data">
 
             <div class="mb-3">
                 <label for="title" class="form-label">本のタイトル</label>
@@ -36,12 +37,17 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="image" class="form-label">画像</label>
-                <input type="text" name="books[coverImageUrl]" class="form-control" id="image"
-                    value="<%= book.coverImageUrl %>" required>
-                <div class="valid-feedback">
-                    OK!
-                </div>
+                <label for="image" class="form-label">画像の追加</label>
+                <input class="form-control" type="file" id="image" name="image" multiple>
+            </div>
+            <div class="mb-3">
+                <% book.images.forEach(function(img,i){ %>
+                    <img src="<%= img.url  %>" class="img-thumbnail" alt="">
+                    <div class="form-check-inline">
+                        <input type="checkbox" name="deleteImages[]" id="image<%= i  %>" value="<%= img.filename  %>">
+                    </div>
+                    <label for="image<%= i  %>">削除する</label>
+                    <% }) %>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">説明</label>

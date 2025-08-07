@@ -1,4 +1,5 @@
 const Book = require('../models/book');
+const { cloudinary } = require('../cloudinary');
 
 module.exports.index = async (req, res) => {
     const books = await Book.find({});
@@ -40,9 +41,18 @@ module.exports.renderEditForm = async (req, res) => {
 }
 
 module.exports.updateBook = async (req, res) => {
+    console.log(req.body);
     const { bookId } = req.params;
     const book = await Book.findByIdAndUpdate(bookId, { ...req.body.books });
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    book.images.push(...imgs);
     await book.save();
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+        await book.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+    }
     req.flash('success', '本の情報を更新しました');
     res.redirect(`/books/${book._id}`);
 }
