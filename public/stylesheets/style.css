@@ -1,11 +1,16 @@
 body {
-    background-color: #F9F8F3;
-    color: #001C2E;
+    background-color: #FBF5DE;
+
+}
+
+.page-title {
+    color: #DC3C22 !important;
 }
 
 .navbar-custom {
-    background-color: #D0DDF0 !important;
-    color: #001C2E !important;
+    background-color: #3D74B6 !important;
+    color: FBF5DE !important;
+
 
 }
 
@@ -22,4 +27,34 @@ body {
 
 .book-title {
     font-weight: bold;
+    color: #3D74B6 !important;
+
 }
+
+.link-underline-opacity-75-hover:hover {
+    text-decoration-color: #43640b !important;
+
+    /* 好きな色に */
+}
+
+.card-img-top {
+    height: 300px;
+    /* 固定高さ */
+    object-fit: cover;
+    /* 画像を切り取りつつ埋める */
+}
+
+.no-image {
+    background-color: #ddd;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    height: 300px;
+    /* カードの高さに合わせる */
+}
+
+/* .no-image::before {
+    content: "画像なし";
+} */

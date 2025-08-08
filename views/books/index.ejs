@@ -1,19 +1,45 @@
 <% layout('layouts/boilerplate') %>
 
+
+
     <div class="container">
-        <h3>
-            本を探す
-        </h3>
-        <ul>
-            <% for(let book of books) {%>
-                <li>
-                    <a href="books/<%= book._id  %>">
-                        <%=book.title %>
-                    </a>
-                </li>
-                <% } %>
-        </ul>
-        <% if(currentUser){ %>
+        <h1 class="text-center page-title">本を探す</h1>
+        <div class="offset-md-2 mb-3">
             <a href="/books/new">本を新規登録する</a>
+        </div>
+
+        <% for(let book of books) {%>
+            <div class="offset-md-2 col-md-8">
+                <div class=" card mb-4 h-100">
+                    <div class="row g-0">
+                        <div class="  col-md-3 ">
+                            <% if(book.images && book.images.length>0){ %>
+                                <img src="<%=book.images[0].url %>" class="img-fluid rounded-start card-img-top "
+                                    alt="...">
+                                <% }else{ %>
+                                    <img src="" class="card-img-top no-image" alt="画像なし">
+                                    <% } %>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body p-4">
+                                <h5 class="card-title book-title">
+                                    <%=book.title %>
+                                </h5>
+                                <p class="card-text"><small class="text-body-secondary">
+                                        <%= book.author %>
+                                    </small></p>
+                                <p class="card-text multiline-ellipsis">
+                                    <%= book.description %>
+                                </p>
+                                <a class="stretched-link" href="books/<%= book._id  %>"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <% } %>
+
+
     </div>
