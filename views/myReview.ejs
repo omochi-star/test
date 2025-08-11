@@ -21,12 +21,14 @@
                             <p class="card-text multiline-ellipsis">
                                 <%= review.content %>
                             </p>
-                            <a href="/reviews/<%= review._id %>">レビュー詳細へ</a>
+
+
                         </div>
                         <div class="card-footer text-body-secondary">
                             <p>投稿日: <%= review.formattedDate %>
                             </p>
                         </div>
+                        <a class="stretched-link" href="/reviews/<%= review._id %>"></a>
                     </div>
 
                 </div>

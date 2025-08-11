@@ -4,7 +4,7 @@ body {
 }
 
 .page-title {
-    color: #DC3C22 !important;
+    /* color: #DC3C22 !important; */
 }
 
 .navbar-custom {
@@ -39,6 +39,7 @@ body {
 
 .card-img-top {
     height: 300px;
+    width: 200px;
     /* 固定高さ */
     object-fit: cover;
     /* 画像を切り取りつつ埋める */
@@ -58,3 +59,13 @@ body {
 /* .no-image::before {
     content: "画像なし";
 } */
+
+.carousel-img {
+    height: 390px;
+    width: 260px;
+    /* 固定高さ */
+    object-fit: cover;
+    /* 画像を切り取りつつ埋める */
+}
+
+/* /* } */

@@ -1,4 +1,5 @@
 const Book = require('../models/book');
+const Review = require('../models/review');
 const { cloudinary } = require('../cloudinary');
 
 module.exports.index = async (req, res) => {
@@ -15,7 +16,6 @@ module.exports.createBook = async (req, res) => {
     book.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     book.owner = req.user._id;
     await book.save();
-    console.log(book);
     req.flash('success', '新しい本を登録しました');
     res.redirect(`books/${book._id}`);
 }
@@ -27,7 +27,12 @@ module.exports.showBook = async (req, res) => {
         req.flash('error', '本の詳細ページは見つかりませんでした');
         return res.redirect('/books');
     }
-    res.render('books/show', { book });
+    const reviews = await Review.find({ book: bookId }).populate('owner');
+    const formattedReviews = reviews.map(review => ({
+        ...review.toObject(),
+        formattedDate: review.createdAt.toLocaleDateString('ja-JP')
+    }));
+    res.render('books/show', { book, reviews: formattedReviews });
 }
 
 module.exports.renderEditForm = async (req, res) => {
