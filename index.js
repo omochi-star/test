@@ -84,11 +84,11 @@ app.get('/', (req, res) => {
 app.get('/my/reviews', isLoggedIn, async (req, res) => {
     const userId = req.user._id;
     const reviews = await Review.find({ owner: userId }).populate('book');
-    const formattedReviews = reviews.map(review => ({
-        ...review.toObject(),
-        formattedDate: review.createdAt.toLocaleDateString('ja-JP')
-    }));
-    res.render('myReview', { reviews: formattedReviews });
+    // const formattedReviews = reviews.map(review => ({
+    //     ...review.toObject(),
+    //     formattedDate: review.createdAt.toLocaleDateString('ja-JP')
+    // }));
+    res.render('myReview', { reviews });
 });
 
 app.use('/books', bookRoutes);

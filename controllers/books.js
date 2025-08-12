@@ -15,6 +15,11 @@ module.exports.createBook = async (req, res) => {
     const book = new Book(req.body.books);
     book.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     book.owner = req.user._id;
+    const exists = await Book.findOne({ isbn: book.isbn });
+    if (exists) {
+        req.flash('error', 'このISBNの本はすでに登録されています');
+        return res.redirect('/books/new');
+    };
     await book.save();
     req.flash('success', '新しい本を登録しました');
     res.redirect(`books/${book._id}`);
@@ -28,11 +33,12 @@ module.exports.showBook = async (req, res) => {
         return res.redirect('/books');
     }
     const reviews = await Review.find({ book: bookId }).populate('owner');
-    const formattedReviews = reviews.map(review => ({
-        ...review.toObject(),
-        formattedDate: review.createdAt.toLocaleDateString('ja-JP')
-    }));
-    res.render('books/show', { book, reviews: formattedReviews });
+    // const formattedReviews = reviews.map(review => ({
+    //     ...review.toObject(),
+    //     formattedDate: review.createdAt.toLocaleDateString('ja-JP')
+    // }));
+    // res.render('books/show', { book, reviews: formattedReviews });
+    res.render('books/show', { book, reviews });
 }
 
 module.exports.renderEditForm = async (req, res) => {

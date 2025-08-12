@@ -22,7 +22,7 @@ module.exports.createReview = async (req, res) => {
 }
 
 module.exports.showReview = async (req, res) => {
-    const review = await Review.findById(req.params.reviewId).populate('book');
+    const review = await Review.findById(req.params.reviewId).populate('book').populate('owner');
     if (!review) {
         req.flash('error', 'レビューの詳細ページは見つかりませんでした');
         return res.redirect('/my/reviews');
