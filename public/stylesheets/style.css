@@ -1,3 +1,8 @@
+html {
+    font-size: 18px;
+    /* デフォルトは16pxなのでちょっと大きくなる */
+}
+
 body {
     background-color: #FBF5DE;
     font-family: "Zen Maru Gothic", sans-serif;
@@ -17,8 +22,9 @@ body {
 }
 
 .book-description {
-    white-space: pre-wrap;
-    /* 改行もスペースも保持 */
+    white-space: pre-line;
+    text-align: left;
+    /* スペース保持 */
 }
 
 .multiline-ellipsis {

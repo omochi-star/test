@@ -2,8 +2,13 @@
     <link rel="stylesheet" href="/stylesheets/stars.css">
     <div class="container">
         <h1 class="text-center mb-3 ">
-            My読書記録
+            <b>
+                <%= user.username%>
+            </b>さんの読書メモ
         </h1>
+        <h4 class=" mb-3 text-body-secondary text-center">
+            <%=reviews.length %>冊の読書メモを書きました！
+        </h4>
         <% for(let review of reviews) {%>
             <div class="row">
                 <div class="offset-md-2 col-md-8">

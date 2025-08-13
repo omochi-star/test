@@ -32,12 +32,7 @@ module.exports.showBook = async (req, res) => {
         req.flash('error', '本の詳細ページは見つかりませんでした');
         return res.redirect('/books');
     }
-    const reviews = await Review.find({ book: bookId }).populate('owner');
-    // const formattedReviews = reviews.map(review => ({
-    //     ...review.toObject(),
-    //     formattedDate: review.createdAt.toLocaleDateString('ja-JP')
-    // }));
-    // res.render('books/show', { book, reviews: formattedReviews });
+    const reviews = await Review.find({ book: bookId }).sort({ createdAt: -1 }).populate('owner');
     res.render('books/show', { book, reviews });
 }
 

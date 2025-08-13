@@ -3,13 +3,13 @@
     <h3 class="text-center">
         <b>
             <%= review.book.title %>
-        </b>のレビューを編集
+        </b>の読書メモを編集
     </h3>
     <div class="offset-md-3 col-md-6">
         <form action="/reviews/<%= review._id %>?_method=PUT" method="POST" class="validated-form" novalidate>
             <div class="mb-3">
-                <label for="content" class="form-label">レビュー</label>
-                <textarea name="review[content]" class="form-control" id="content"
+                <label for="content" class="form-label">メモ</label>
+                <textarea name="review[content]" class="form-control" id="content" style="height: 400px"
                     required><%= review.content %></textarea>
                 <div class="valid-feedback">
                     OK!
@@ -17,7 +17,6 @@
             </div>
             <div class="mb-3">
                 <fieldset class="starability-basic">
-                    <legend>評価:</legend>
                     <input type="radio" id="first-rate1" name="review[rating]" value="1" <% if (review.rating===1) {
                         %>checked<% } %> />
                         <label for="first-rate1" title="1">1 star</label>

@@ -83,12 +83,9 @@ app.get('/', (req, res) => {
 //ログインしているユーザのレビュー一覧表示
 app.get('/my/reviews', isLoggedIn, async (req, res) => {
     const userId = req.user._id;
-    const reviews = await Review.find({ owner: userId }).populate('book');
-    // const formattedReviews = reviews.map(review => ({
-    //     ...review.toObject(),
-    //     formattedDate: review.createdAt.toLocaleDateString('ja-JP')
-    // }));
-    res.render('myReview', { reviews });
+    const reviews = await Review.find({ owner: userId }).sort({ createdAt: -1 }).populate('book');
+    const user = req.user;
+    res.render('myReview', { reviews, user });
 });
 
 app.use('/books', bookRoutes);

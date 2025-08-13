@@ -1,20 +1,22 @@
 <% layout('layouts/boilerplate') %>
-
-    <h1>読書記録とは？</h1>
-
-    <p>本を読んだら、一言でも感想を書いておくと、より印象に残ります。<br>
-        この読書記録アプリは、あなたの「読書メモ」をシンプルに残します！</p>
-
-    <% if(currentUser){ %>
-        <a href="/my/reviews">My読書記録へ</a>
-        <% }else{ %>
-            <div>
-                ユーザー登録をして読書記録をしましょう！
-                <a class="btn btn-primary" href="/register" role="button">ユーザー登録</a>
-            </div>
-            or
-            <div>
-                ユーザー登録はお済みですか？
-                <a class="btn btn-primary" href="/login" role="button">ログイン</a>
-            </div>
-            <% } %>
+    <div class="text-center">
+        <main class="px-3">
+            <h1>読書メモとは？</h1>
+            <p class="lead m-3">本を読んだら、一言でも感想を書いておくと、より印象に残ります。<br>
+                この読書記録アプリは、あなたの「読書メモ」をシンプルに残します！</p>
+        </main>
+        <% if(currentUser){ %>
+            <a href="/my/reviews" class="btn btn-outline-secondary fs-4">My読書メモへ</a>
+            <% }else{ %>
+                <div>
+                    ユーザー登録をして読書メモをしましょう！
+                    <a class="btn btn-primary" href="/register" role="button">ユーザー登録</a>
+                </div>
+                or
+                <div>
+                    ユーザー登録はお済みですか？
+                    <a class="btn btn-primary" href="/login" role="button">ログイン</a>
+                </div>
+                <% } %>
+    </div>
+    </div>
