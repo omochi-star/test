@@ -18,10 +18,12 @@
             </div>
             <div class="mb-3">
                 <label for="isbn" class="form-label">ISBN</label>
-                <input type="text" name="books[isbn]" class="form-control" id="isbn" required>
-                <div class="valid-feedback">
-                    OK!
+                <input type="text" name="books[isbn]" class="form-control" id="isbn" required
+                    pattern="^\d{13}$|^\d{3}-\d{1,5}-\d{1,7}-\d{1,7}-\d{1}$">
+                <div class="invalid-feedback">
+                    13桁の数字で入力してください。
                 </div>
+
             </div>
             <div class="mb-3">
                 <label for="category" class="form-label">ジャンル</label>

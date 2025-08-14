@@ -81,4 +81,16 @@ body {
     /* 画像を切り取りつつ埋める */
 }
 
-/* /* } */
+
+
+.btn-primary {
+    background-color: #3D74B6;
+}
+
+.btn-primary:hover {
+    background-color: #2d5689;
+}
+
+.btn-danger {
+    background-color: #DC3C22;
+}
