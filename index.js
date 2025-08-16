@@ -1,6 +1,7 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+// if (process.env.NODE_ENV !== 'production') {
+//     require('dotenv').config();
+// }
+require('dotenv').config();
 
 const express = require('express');
 const app = express();
@@ -10,6 +11,7 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
+const helmet = require('helmet');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -47,6 +49,7 @@ app.use(methodOverride('_method'));
 
 
 const sessionConfig = {
+    name: 'hoge',
     secret: 'mysecret',
     resave: false,
     saveUninitialized: true,
@@ -65,6 +68,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use(flash());
+app.use(helmet());
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
@@ -79,6 +83,36 @@ app.use((req, res, next) => {
 });
 
 // app.use(mongoSanitize());
+const scriptSrcUrls = [
+    'https://cdn.jsdelivr.net',
+    'https://fonts.googleapis.com'
+];
+const styleSrcUrls = [
+    'https://cdn.jsdelivr.net',
+    'https://fonts.googleapis.com'
+];
+const connectSrcUrls = [
+];
+const fontSrcUrls = [
+    'https://fonts.gstatic.com'
+];
+const imgSrcUrls = [
+    `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`,
+];
+
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: [],
+        connectSrc: ["'self'", ...connectSrcUrls],
+        scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+        styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+        workerSrc: ["'self'", "blob:"],
+        childSrc: ["blob:"],
+        objectSrc: [],
+        imgSrc: ["'self'", 'blob:', 'data:', ...imgSrcUrls],
+        fontSrc: ["'self'", ...fontSrcUrls]
+    }
+}));
 
 app.get('/', (req, res) => {
     res.render('home');
